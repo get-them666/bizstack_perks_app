@@ -3,89 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BizStack Perks — Premium Underwriting Automation</title>
+    <title>BIZSTACK PERKS</title>
     <style>
-        :root {
-            --vintage-green: #2d5a27;
-            --mint-cream: #f4fbf7;
-            --charcoal: #1e2522;
-            --gold-accent: #d4af37;
-        }
+        /* Smooth, modern system font instead of monospace typewriter look */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f5f6; color: #222; margin: 0; padding: 40px 20px; }
         
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; }
+        /* Sleek header bar */
+        .header-box { padding: 15px 0; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto; border-bottom: 2px solid #eaeaea; }
+        .header-title { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; text-transform: uppercase; margin: 0; color: #111; }
         
-        body { background-color: var(--mint-cream); color: var(--charcoal); line-height: 1.6; padding: 20px; }
+        /* Grid Layout */
+        .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
         
-        header { text-align: center; padding: 60px 20px; border: 3px double var(--vintage-green); background: white; margin-bottom: 40px; }
-        header h1 { font-size: 2.5rem; color: var(--vintage-green); letter-spacing: -1px; margin-bottom: 10px; }
-        header p { font-size: 1.1rem; color: #555; font-style: italic; }
+        /* Soft shadows and subtle rounded borders instead of thick blocks */
+        .card { background: #fff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid #e1e4e6; display: flex; flex-direction: column; justify-content: space-between; min-height: 420px; box-sizing: border-box; }
+        .card-num { font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; }
+        
+        /* Card Title styling options */
+        .card-num.red { color: #e05353; }
+        .card-num.green { color: #2ecc71; }
+        .card-num.yellow { color: #f1c40f; }
 
-        .container { max-width: 900px; margin: 0 auto; }
-
-        .ascii-art { font-family: monospace; white-space: pre; background: var(--charcoal); color: #4af626; padding: 20px; border-radius: 6px; font-size: 0.75rem; overflow-x: auto; margin-bottom: 40px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
-        .card { background: white; border: 1px solid #ccc; padding: 25px; border-bottom: 4px solid var(--vintage-green); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-3px); }
-        .card h3 { color: var(--vintage-green); margin-bottom: 12px; font-size: 1.3rem; }
-
-        .cta-section { text-align: center; background: var(--vintage-green); color: white; padding: 50px 20px; margin-bottom: 40px; }
-        .cta-section h2 { margin-bottom: 15px; font-size: 1.8rem; }
-        .cta-btn { display: inline-block; background: var(--gold-accent); color: var(--charcoal); padding: 15px 35px; font-weight: bold; text-decoration: none; font-size: 1.2rem; border: 2px solid var(--charcoal); box-shadow: 4px 4px 0px var(--charcoal); }
-        .cta-btn:hover { background: white; box-shadow: 2px 2px 0px var(--charcoal); }
-
-        footer { text-align: center; padding: 30px; font-size: 0.85rem; border-top: 1px dashed #ccc; color: #777; }
+        .card-text { font-size: 0.95rem; line-height: 1.6; color: #555; margin-bottom: 25px; flex-grow: 1; }
+        
+        .benefits-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #333; }
+        .benefits-list { padding-left: 20px; margin-bottom: 30px; color: #555; font-size: 0.9rem; line-height: 1.6; }
+        .benefits-list li { margin-bottom: 10px; }
+        
+        /* Clean, rounded buttons with a slight bounce effect */
+        .action-link { display: block; text-align: center; text-decoration: none; color: #fff; font-weight: 600; font-size: 0.9rem; padding: 14px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; transition: transform 0.2s, filter 0.2s; }
+        .action-link:hover { filter: brightness(0.9); transform: translateY(-2px); }
+        .action-link:active { transform: translateY(0); }
+        
+        /* Colors adjusted to match modern dashboards */
+        .btn-yellow { background: #f39c12; }
+        .btn-green { background: #27ae60; }
+        .btn-red { background: #c0392b; }
+        
+        .footer { text-align: center; font-size: 0.8rem; color: #888; padding-top: 40px; margin-top: 60px; border-top: 1px solid #eaeaea; max-width: 1200px; margin-left: auto; margin-right: auto; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>💵 BIZSTACK PERKS ENGINE 💵</h1>
-        <p>Old-School Financial Principles Underlying Cutting-Edge Automated Corporate Underwriting.</p>
-    </header>
-
-    <div class="ascii-art">
- ______________________________________________________
-/                                                      \
-
-|  [SYSTEM STATUS: ONLINE]                             |
-|  --> CORE UNDERWRITING ANALYTICS READY...            |
-|  --> TELEGRAM AFFILIATE DATA LINKS RE-ANCHORED...     |
-|  --> LIVE MATRICES INTEGRATION COMPLETE...           |
-\______________________________________________________/
-         \   ^__^
-          \  (oo)\_______
-             (__)\       )\/\
-                 ||----w |
-                 ||     ||
+    <div class="header-box">
+        <div class="header-title">⚡ BIZSTACK PERKS</div>
     </div>
 
-    <div class="grid">
+    <div class="cards-container">
+        <!-- CARD 01 -->
         <div class="card">
-            <h3>📊 Advanced Profiling</h3>
-            <p>We programmatically map corporate annual gross metrics alongside institutional tier-1 funding standards effortlessly.</p>
+            <div>
+                <div class="card-num yellow">01 / STRATEGIC CAPITAL INTAKE</div>
+                <p class="card-text">Our secure ingestion gateway allows commercial entities to submit structural operational data, gross annual revenue milestones, and foundational credit risk assessments directly to our underwriting database matrix.</p>
+                <div class="benefits-title">Key Strategic Benefits:</div>
+                <ul class="benefits-list">
+                    <li>Accelerates commercial financing review lifecycles by up to 70%.</li>
+                    <li>Establishes a permanent, secure database record for compliance tracking.</li>
+                    <li>Bypasses intermediary blockages through instant API pipeline routing.</li>
+                </ul>
+            </div>
+            <a href="terminal.html" class="action-link btn-yellow">OPEN INGESTION TERMINAL →</a>
         </div>
+
+        <!-- CARD 02 -->
         <div class="card">
-            <h3>💳 Premium Matchers</h3>
-            <p>Gain automated pathways to exclusive cashback tools, commercial gold accounts, and zero-friction financial products.</p>
+            <div>
+                <div class="card-num green">02 / CORPORATE YIELD ADVISING</div>
+                <p class="card-text">Dedicated strategic consulting framework engineered to help enterprises evaluate corporate benefit portfolios, maximize operational cost-reductions, and design scalable organizational benefit stacks.</p>
+                <div class="benefits-title">Key Strategic Benefits:</div>
+                <ul class="benefits-list">
+                    <li>Identifies hidden margin leakage in baseline vendor contracts.</li>
+                    <li>Structures optimized, tax-advantaged operational spending models.</li>
+                    <li>Enhances human capital retention with high-tier corporate perks.</li>
+                </ul>
+            </div>
+            <a href="consult.html" class="action-link btn-green">REQUEST CONSULT MATRIX →</a>
         </div>
+
+        <!-- CARD 03 -->
         <div class="card">
-            <h3>🤖 Real-Time Delivery</h3>
-            <p>No waiting rooms. Our interface acts instantly via secure background webhook architecture arrays straight to you.</p>
+            <div>
+                <div class="card-num red">03 / LOGISTICS OPTIMIZATION</div>
+                <p class="card-text">An advanced technical routing branch focused on engineering high-efficiency software loops, automated outreach protocols, and real-time backend data caching servers tailored to scale modern pipelines.</p>
+                <div class="benefits-title">Key Strategic Benefits:</div>
+                <ul class="benefits-list">
+                    <li>Replaces manual data input tasks with automated worker scripts.</li>
+                    <li>Deploys reliable background bot networks for continuous outreach.</li>
+                    <li>Reduces computing footprint overhead with optimized cache storage.</li>
+                </ul>
+            </div>
+            <a href="infrastructure.html" class="action-link btn-red">CONNECT INFRASTRUCTURE →</a>
         </div>
     </div>
 
-    <div class="cta-section">
-        <h2>Ready to Scale Your Corporate Ledger Line?</h2>
-        <p style="margin-bottom: 25px;">Launch our system pipeline directly inside Telegram and review your options in seconds.</p>
-        <a href="https://t.me" class="cta-btn" target="_blank">📟 ACTIVATE TELEGRAM BOT NOW</a>
+    <div class="footer">
+        © 2026 BizStack Perks LLC. All institutional data models verified.
     </div>
-
-    <footer>
-        <p>&copy; 2026 O'Leary Enterprises LLC. All rights reserved. Managed under robust environment separation layers.</p>
-    </footer>
-</div>
 
 </body>
 </html>

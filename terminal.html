@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIZSTACK // INGESTION TERMINAL</title>
+    <script src="https://jsdelivr.net" defer></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f5f6; color: #222; margin: 0; padding: 40px 20px; }
+        .container { background: #fff; border-radius: 12px; padding: 40px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid #e1e4e6; max-width: 600px; margin: 40px auto; box-sizing: border-box; }
+        h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; text-transform: uppercase; margin-top: 0; margin-bottom: 10px; color: #111; }
+        .status { font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; color: #e05353; text-transform: uppercase; margin-bottom: 25px; }
+        p { font-size: 0.95rem; line-height: 1.6; color: #555; margin-bottom: 30px; }
+        .drop-zone { border: 2px dashed #cbd2d6; border-radius: 8px; padding: 40px 20px; text-align: center; background: #fafafa; cursor: pointer; transition: background 0.2s, border-color 0.2s; margin-bottom: 30px; }
+        .drop-zone:hover, .drop-zone.drag-over { background: #f0f2f5; border-color: #f39c12; }
+        .drop-zone-text { font-size: 0.95rem; color: #666; font-weight: 500; }
+        .file-input { display: none; }
+        .file-list { margin-top: 15px; font-size: 0.85rem; color: #27ae60; font-weight: 600; text-align: left; max-height: 100px; overflow-y: auto; }
+        .btn { display: inline-block; text-align: center; text-decoration: none; color: #fff; background: #222; font-weight: 600; font-size: 0.9rem; padding: 12px 24px; border-radius: 8px; text-transform: uppercase; border: none; cursor: pointer; transition: transform 0.2s, background 0.2s; letter-spacing: 0.5px; }
+        .btn:hover { background: #000; transform: translateY(-2px); }
+        .btn-secondary { display: inline-block; text-align: center; text-decoration: none; color: #555; background: none; border: 1px solid #cbd2d6; padding: 12px 24px; border-radius: 8px; text-transform: uppercase; font-weight: 600; font-size: 0.9rem; margin-left: 10px; transition: background 0.2s, color 0.2s; }
+        .btn-secondary:hover { background: #fafafa; color: #000; }
+        .actions { display: flex; align-items: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OPEN INGESTION TERMINAL</h1>
+        <div id="terminal-status" class="status">▲ STATUS: OFFLINE // INITIALIZATION REQUIRED</div>
+        <p>Submit structural operational data, gross annual revenue milestones, and foundational credit risk assessments directly to our underwriting database matrix.</p>
+        <div class="drop-zone" id="drop-zone">
+            <span class="drop-zone-text">Drag & drop client CSV/XLSX metrics here or <span style="color: #f39c12; text-decoration: underline;">browse files</span></span>
+            <input type="file" id="file-input" class="file-input" multiple>
+            <div class="file-list" id="file-list"></div>
+        </div>
+        <div class="actions">
+            <button class="btn" id="upload-btn">Upload Matrix</button>
+            <a href="index.html" class="btn btn-secondary">← RETURN TO HUB</a>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const SUPABASE_URL = "https://supabase.co";
+            const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1tcWpocnJvbGVrcXJmYnlrb2dnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA5NzYyMTMsImV4cCI6MjA1NjU1MjIxM30.7jJm7qYxVqVz8R_Z6f-O9vFzWlQxO6G1mZ8W4z2v3bY";
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const fileList = document.getElementById('file-list');
+            const uploadBtn = document.getElementById('upload-btn');
+            const statusText = document.getElementById('terminal-status');
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            ['dragleave', 'drop'].forEach(event => dropZone.addEventListener(event, () => dropZone.classList.remove('drag-over')));
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                fileInput.files = e.dataTransfer.files;
+                updateFileList();
+            });
+            fileInput.addEventListener('change', updateFileList);
+            function updateFileList() {
+                fileList.innerHTML = '';
+                for (let file of fileInput.files) {
+                    fileList.innerHTML += `<div>✓ ${file.name} (${(file.size/1024).toFixed(1)} KB)</div>`;
+                }
+            }
+            uploadBtn.addEventListener('click', async () => {
+                if(fileInput.files.length === 0) {
+                    alert('Please select or drop files first.');
+                    return;
+                }
+                statusText.innerText = '● STATUS: WRITING TO STORAGE BUCKET MATRIX...';
+                statusText.style.color = '#f39c12';
+                for (let file of fileInput.files) {
+                    const uniqueFilePath = `${Date.now()}_${file.name}`;
+                    const { error } = await supabase.storage.from('client-metrics').upload(uniqueFilePath, file);
+                    if (error) {
+                        statusText.innerText = '▲ STATUS: STORAGE DRIVE ERROR';
+                        statusText.style.color = '#e05353';
+                        alert(`Upload Error for ${file.name}: ` + error.message);
+                        return;
+                    }
+                }
+                statusText.innerText = '● STATUS: INGESTION COMPLETE // RECORD PERMANENT';
+                statusText.style.color = '#27ae60';
+                alert('All file assets successfully uploaded to the client-metrics cloud bucket.');
+                fileList.innerHTML = '';
+            });
+        });
+    </script>
+</body>
+</html>

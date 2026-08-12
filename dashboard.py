@@ -110,3 +110,50 @@ else:
     st.info("Awaiting pipeline gateway data... Run your launcher.sh script to catch remote webhooks.")
 
 st.button("🔄 Manual Screen Refresh")
+
+# ==============================================================================
+# 🏨 HOTEL AFFILIATE MONETIZATION DASHBOARD MODULE
+# ==============================================================================
+import streamlit as st
+import requests
+
+st.markdown("---")
+st.subheader("🧳 Real-Time Hotel Affiliate Matrix")
+st.write("Query available commercial properties and generate profitable tracking links instantly.")
+
+# Create clean search parameter inputs right inside the layout pane
+col1, col2 = st.columns([2, 1])
+with col1:
+    target_city = st.text_input("Enter Airport City Code (e.g., NYC, LON, LAX):", value="NYC", max_chars=3)
+with col2:
+    search_triggered = st.button("Extract Leads", use_container_width=True)
+
+if search_triggered or target_city:
+    try:
+        # Programmatically pull data from your secure local API subdomain route
+        api_route = f"https://bizstackperks.com{target_city.upper().strip()}"
+        response = requests.get(api_route, timeout=5).json()
+        
+        if "results" in response and response["results"]:
+            st.success(f"Surfaced {response['total_available_leads']} monetized property channels for {target_city.upper()}.")
+            
+            # Render the data results inside clean visual columns mimicking card fragments
+            for hotel in response["results"]:
+                brand_emoji = "🏨" if hotel["brand"] == "Marriott" else "🏨"
+                card_color = "#3a1c1c" if hotel["brand"] == "Marriott" else "#1c2a3a"
+                
+                st.markdown(
+                    f"""
+                    <div style="background-color: {card_color}; padding: 16px; border-radius: 8px; margin-bottom: 12px; border: 1px solid #444;">
+                        <h4 style="margin: 0; color: #fff;">{brand_emoji} {hotel['property_name']}</h4>
+                        <p style="margin: 4px 0 12px 0; font-size: 13px; color: #aaa;">Corporate Entity Branch: <b>{hotel['brand']}</b></p>
+                    </div>
+                    """, 
+                    unsafe_allow_html=True
+                )
+                # Display a secure tracking link button users can click to drive revenue
+                st.link_button(f"Book via {hotel['brand']} Channel ➔", hotel["secure_payment_route"])
+        else:
+            st.info("No active properties located for the specified parameter focus.")
+    except Exception as e:
+        st.error(f"Failed to communicate with API server pipeline infrastructure: {e}")

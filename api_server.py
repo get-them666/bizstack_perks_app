@@ -1,10 +1,10 @@
 import json
+import asyncio
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
-from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,52 +14,66 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/vapi/chat")
+@app.middleware("http")
+async def bypass_ngrok_interceptor(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["ngrok-skip-browser-warning"] = "true"
+    response.headers["X-Ngrok-Skip-Browser-Warning"] = "true"
+    return response
+
+@app.post("/chat/completions")
 async def vapi_chat_endpoint(request: Request):
     """
-    Production-grade Custom LLM engine for Vapi.
-    Returns a unified, compliant JSON payload directly to ensure zero audio disconnects.
+    OpenAI-compliant streaming endpoint to handle custom voice chat.
+    Sends text segments chunk-by-chunk to guarantee a stable phone connection.
     """
     try:
         body = await request.json()
-        print("📥 Received event layout payload from Vapi:", json.dumps(body))
+        print("📥 Incoming Request Payload from Vapi Framework:", json.dumps(body))
+    except Exception:
+        pass
+
+    async def response_generator():
+        reply_text = (
+            "Thanks for checking out BizStack Perks! Our system dashboard is fully live and "
+            "running local terminal workflows. How can I help you scale your business operations today?"
+        )
+        words = reply_text.split()
         
-        # 1. Gracefully resolve metadata handshakes and structural pings
-        if "messages" not in body:
-            return JSONResponse(content={"status": "ready", "message": "BizStack engine online"}, status_code=200)
+        # 1. Stream individual text tokens to feed the voice engine instantly
+        for i, word in enumerate(words):
+            chunk = {
+                "id": "chatcmpl-bizstackbot",
+                "object": "chat.completion.chunk",
+                "choices": [{
+                    "delta": {
+                        "role": "assistant",
+                        "content": word + " "
+                    },
+                    "index": 0,
+                    "finish_reason": None
+                }]
+            }
+            yield f"data: {json.dumps(chunk)}\n\n"
+            await asyncio.sleep(0.05)  # Natural pacing to secure stable audio buffering
 
-    except Exception as e:
-        print(f"⚠️ Metadata parsing fallback engaged: {e}")
-        return JSONResponse(content={"status": "ready"}, status_code=200)
+        # 2. Emit clean, empty stopping block to signify data closure safely
+        stop_chunk = {
+            "id": "chatcmpl-bizstackbot",
+            "object": "chat.completion.chunk",
+            "choices": [{
+                "delta": {},
+                "index": 0,
+                "finish_reason": "stop"
+            }]
+        }
+        yield f"data: {json.dumps(stop_chunk)}\n\n"
+        yield "data: [DONE]\n\n"
 
-    # 2. Construct your complete target business response string
-    reply_text = (
-        "Thanks for checking out BizStack Perks! Our system dashboard is fully live and "
-        "running local terminal workflows. How can I help you scale your business operations today?"
-    )
-
-    # 3. Format the complete answer string inside an OpenAI-compliant message frame array
-    response_payload = {
-        "id": "chatcmpl-bizstackbot",
-        "object": "chat.completion",
-        "choices": [{
-            "message": {
-                "role": "assistant",
-                "content": reply_text
-            },
-            "index": 0,
-            "finish_reason": "stop"
-        }]
-    }
-
-    print("📤 Sending verified structural JSON payload back to Vapi client layer.")
-    return JSONResponse(content=response_payload, status_code=200)
+    return StreamingResponse(response_generator(), media_type="text/event-stream")
 
 @app.post("/vapi/webhook")
 async def vapi_webhook_endpoint(request: Request):
-    """
-    Tracks state updates and system operational logs.
-    """
     try:
         payload = await request.json()
         print("📊 Telephony Status Event Received:", json.dumps(payload))
@@ -70,31 +84,3 @@ async def vapi_webhook_endpoint(request: Request):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8080)
-
-from fastapi import FastAPI, Body
-import os
-
-# Ensure your existing FastAPI app instance matches the name below (usually 'app')
-@app.post("/api/consult")
-async def handle_consult_form(payload: dict = Body(...)):
-    """Handles data processing requests originating from the consult.html form matrix."""
-    company = payload.get("company", "Default Corp")
-    print(f"[Terminal Log] Processing matrix parameters for: {company}")
-    
-    # Run backend pipeline computations here
-    return {
-        "status": "processed",
-        "message": f"Successfully calculated benefits stack matrix allocation targets for {company}."
-    }
-
-@app.get("/api/browse-files")
-async def list_repository_files():
-    """Provides a safe directory index to display files inside the workspace."""
-    target_dir = os.path.dirname(os.path.abspath(__file__))
-    try:
-        files = os.listdir(target_dir)
-        # Exclude hidden system profiles or secure database configurations
-        filtered_files = [f for f in files if not f.startswith('.') and not f.endswith('.db')]
-        return {"directory": target_dir, "files": filtered_files}
-    except Exception as e:
-        return {"error": str(e)}

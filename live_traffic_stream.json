@@ -1,0 +1,450 @@
+[
+    {
+        "timestamp": "2026-08-09 14:09:53",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 34,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:09:55",
+        "vertical": "Fintech_SaaS",
+        "action": "API Docs Abandonment Salvaged",
+        "estimated_value": 1370.35,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:09:56",
+        "vertical": "Credit_Card",
+        "action": "Application Form Re-engagement",
+        "estimated_value": 0,
+        "clicks_added": 43,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:09:59",
+        "vertical": "Fintech_SaaS",
+        "action": "Pricing Page Exit Intercepted",
+        "estimated_value": 2177.69,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:01",
+        "vertical": "Fintech_SaaS",
+        "action": "Pricing Page Exit Intercepted",
+        "estimated_value": 1227.67,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:05",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:10:07",
+        "vertical": "Credit_Card",
+        "action": "Application Form Re-engagement",
+        "estimated_value": 0,
+        "clicks_added": 27,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:10",
+        "vertical": "Credit_Card",
+        "action": "Application Form Re-engagement",
+        "estimated_value": 0,
+        "clicks_added": 32,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:12",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:10:14",
+        "vertical": "Fintech_SaaS",
+        "action": "API Docs Abandonment Salvaged",
+        "estimated_value": 1836.36,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:17",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:10:19",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:10:23",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 45,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:25",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 11,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:27",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 34,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:29",
+        "vertical": "Fintech_SaaS",
+        "action": "API Docs Abandonment Salvaged",
+        "estimated_value": 1100.11,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:31",
+        "vertical": "Fintech_SaaS",
+        "action": "Pricing Page Exit Intercepted",
+        "estimated_value": 2193.74,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:34",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:10:36",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 18,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:39",
+        "vertical": "Fintech_SaaS",
+        "action": "API Docs Abandonment Salvaged",
+        "estimated_value": 1598.29,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:41",
+        "vertical": "Credit_Card",
+        "action": "Application Form Re-engagement",
+        "estimated_value": 0,
+        "clicks_added": 15,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:43",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:10:46",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 27,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:47",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 36,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:50",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:10:52",
+        "vertical": "Credit_Card",
+        "action": "Application Form Re-engagement",
+        "estimated_value": 0,
+        "clicks_added": 16,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:55",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:10:57",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 21,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:10:59",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:01",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:04",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 47,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:07",
+        "vertical": "Fintech_SaaS",
+        "action": "API Docs Abandonment Salvaged",
+        "estimated_value": 1412.43,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:09",
+        "vertical": "Fintech_SaaS",
+        "action": "API Docs Abandonment Salvaged",
+        "estimated_value": 1706.73,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:11",
+        "vertical": "Fintech_SaaS",
+        "action": "Pricing Page Exit Intercepted",
+        "estimated_value": 1771.73,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:14",
+        "vertical": "Fintech_SaaS",
+        "action": "API Docs Abandonment Salvaged",
+        "estimated_value": 1330.04,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:16",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:18",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:20",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:22",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 33,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:25",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:28",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:31",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 28,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:33",
+        "vertical": "Fintech_SaaS",
+        "action": "Pricing Page Exit Intercepted",
+        "estimated_value": 2015.48,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:35",
+        "vertical": "Credit_Card",
+        "action": "Premium Card Ad Click Tracked",
+        "estimated_value": 0,
+        "clicks_added": 33,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:38",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:41",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:43",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:46",
+        "vertical": "Fintech_SaaS",
+        "action": "Pricing Page Exit Intercepted",
+        "estimated_value": 1470.8,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:49",
+        "vertical": "Fintech_SaaS",
+        "action": "API Docs Abandonment Salvaged",
+        "estimated_value": 1681.53,
+        "clicks_added": 0,
+        "leads_added": 0
+    },
+    {
+        "timestamp": "2026-08-09 14:11:52",
+        "vertical": "Loans_SaaS",
+        "action": "Underwriting Pipeline Push",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-09 14:11:55",
+        "vertical": "Loans_SaaS",
+        "action": "Pre-Screening Data Ingested",
+        "estimated_value": 0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-11 22:41:38",
+        "vertical": "Loans_SaaS",
+        "action": "Telegram Check: LLC ($75,000)",
+        "estimated_value": 2250.0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-11 22:45:05",
+        "vertical": "Loans_SaaS",
+        "action": "Telegram Check: LLC ($75,000)",
+        "estimated_value": 2250.0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-11 23:11:12",
+        "vertical": "Loans_SaaS",
+        "action": "Telegram Check: LLC ($75,000)",
+        "estimated_value": 2250.0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-11 23:45:43",
+        "vertical": "Loans_SaaS",
+        "action": "Telegram Check: LLC ($75,000)",
+        "estimated_value": 2250.0,
+        "clicks_added": 0,
+        "leads_added": 1
+    },
+    {
+        "timestamp": "2026-08-11 23:47:17",
+        "vertical": "Loans_SaaS",
+        "action": "Telegram Check: LLC ($75,000)",
+        "estimated_value": 2250.0,
+        "clicks_added": 0,
+        "leads_added": 1
+    }
+]

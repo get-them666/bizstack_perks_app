@@ -92,62 +92,62 @@
     </script>
 </body>
 <script>
-document.querySelector('form, div.form-container, [onClick*="matrix"]').addEventListener('click', async function(e) {
-    if(e.target.tagName === 'BUTTON' || e.target.innerText.includes('GENERATE')) {
-        e.preventDefault();
-        
-        const companyName = document.querySelector('input[type="text"], #company-name')?.value || 'Test';
-        const footprint = document.querySelector('select')?.value || '1-50 employees';
-        const constraints = document.querySelector('textarea')?.value || '';
+(function(){
+  const el = document.querySelector('form, div.form-container, [onClick*="matrix"]');
+  if (!el) return; // guard against null to avoid runtime errors
 
-        const statusLabel = document.querySelector('[class*="status"], p, span');
-        if(statusLabel) statusLabel.innerHTML = "🟠 STATUS: CONNECTING TO LIVE PROXY TUNNEL...";
+  el.addEventListener('click', async function(e){
+    // Only handle explicit Generate button clicks — don't interfere with anchor navigation
+    const isGenerate = e.target && (e.target.tagName === 'BUTTON' || (e.target.innerText || '').toUpperCase().includes('GENERATE'));
+    if (!isGenerate) return;
 
-        try {
-            // Explicitly point to your local machine port via the browser window environment or local address
-            const backendHost = "http://127.0.0.1:8080";
-            
-            const response = await fetch(`${backendHost}/api/consult`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ company: companyName, footprint: footprint, constraints: constraints })
-            });
-            const data = await response.json();
-            if(statusLabel) statusLabel.innerHTML = "🟢 STATUS: SUCCESS! MATRIX GENERATED.";
-            alert("Matrix Output Received:\n" + JSON.stringify(data));
-        } catch(err) {
-            if(statusLabel) statusLabel.innerHTML = "❌ STATUS: CONNECTION TO API FAILED.";
-            console.error(err);
-        }
+    e.preventDefault();
+
+    const companyName = document.querySelector('input[type="text"], #company-name')?.value || 'Test';
+    const footprint = document.querySelector('select')?.value || '1-50 employees';
+    const constraints = document.querySelector('textarea')?.value || '';
+
+    const statusLabel = document.querySelector('[class*="status"], p, span');
+    if (statusLabel) statusLabel.innerHTML = '🟠 STATUS: SENDING REQUEST...';
+
+    const payload = { company: companyName, footprint: footprint, constraints: constraints };
+
+    // Try the relative API first, then fall back to a local host proxy if that fails
+    const endpoints = ['/api/consult', 'http://127.0.0.1:8080/api/consult'];
+
+    for (const endpoint of endpoints) {
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error('Non-OK response: ' + response.status);
+        const data = await response.json();
+        if (statusLabel) statusLabel.innerHTML = '🟢 STATUS: SUCCESS! MATRIX GENERATED.';
+        alert('Matrix Output Received:\n' + JSON.stringify(data));
+        return;
+      } catch (err) {
+        console.warn('Consult endpoint failed:', endpoint, err);
+        // try next endpoint
+      }
     }
-});
+
+    if (statusLabel) statusLabel.innerHTML = '❌ STATUS: CONNECTION TO API FAILED.';
+  });
+})();
 </script>
 <script>
-document.querySelector('form, div.form-container, [onClick*="matrix"]').addEventListener('click', async function(e) {
-    if(e.target.tagName === 'BUTTON' || e.target.innerText.includes('GENERATE')) {
-        e.preventDefault();
-        
-        const companyName = document.querySelector('input[type="text"], #company-name')?.value || 'Test';
-        const footprint = document.querySelector('select')?.value || '1-50 employees';
-        const constraints = document.querySelector('textarea')?.value || '';
-
-        const statusLabel = document.querySelector('[class*="status"], p, span');
-        if(statusLabel) statusLabel.innerHTML = "🟠 STATUS: COMMUNICATING WITH BOT BACKEND...";
-
-        try {
-            const response = await fetch('/api/consult', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ company: companyName, footprint: footprint, constraints: constraints })
-            });
-            const data = await response.json();
-            if(statusLabel) statusLabel.innerHTML = "🟢 STATUS: SUCCESS! MATRIX GENERATED.";
-            alert("Matrix Output Recieved:\n" + JSON.stringify(data));
-        } catch(err) {
-            if(statusLabel) statusLabel.innerHTML = "❌ STATUS: CONNECTION TO API FAILED.";
-            console.error(err);
-        }
-    }
-});
+(function(){
+  document.addEventListener('click', function(e){
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    if (a.target === '_blank') return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('javascript:') || href.startsWith('#')) return;
+    const start = location.href;
+    setTimeout(() => { if (location.href === start) { try { location.href = href; } catch(e){} } }, 50);
+  });
+})();
 </script>
 </html>

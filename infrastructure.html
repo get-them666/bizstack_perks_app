@@ -21,5 +21,18 @@
         <p>An advanced technical routing branch focused on engineering high-efficiency software loops, automated outreach protocols, and real-time backend data caching servers tailored to scale modern pipelines.</p>
         <a href="index.html" class="btn">← RETURN TO HUB</a>
     </div>
+<script>
+(function(){
+  document.addEventListener('click', function(e){
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    if (a.target === '_blank') return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('javascript:') || href.startsWith('#')) return;
+    const start = location.href;
+    setTimeout(() => { if (location.href === start) { try { location.href = href; } catch(e){} } }, 50);
+  });
+})();
+</script>
 </body>
 </html>

@@ -100,5 +100,19 @@
         © 2026 BizStack Perks LLC. All institutional data models verified.
     </div>
 
+<script>
+(function(){
+  document.addEventListener('click', function(e){
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    if (a.target === '_blank') return; // respect new-tab intent
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('javascript:') || href.startsWith('#')) return;
+    const start = location.href;
+    // If the browser didn't navigate (another handler prevented it), force navigation after a short delay
+    setTimeout(() => { if (location.href === start) { try { location.href = href; } catch(e){} } }, 50);
+  });
+})();
+</script>
 </body>
 </html>

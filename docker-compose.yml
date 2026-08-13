@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    command: /bin/bash -c "alembic upgrade head && uvicorn api.main:app --host 0.0.0.0 --port 8080"
+    ports:
+      - "8080:8080"
+    environment:
+      - STRIPE_MODE=${STRIPE_MODE:-simulate}
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///./bizstack.db}
+      - PLATFORM_WEB_URL=${PLATFORM_WEB_URL:-http://localhost:8080}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+      - SENDER_EMAIL=${SENDER_EMAIL}
+      - VAPI_API_KEY=${VAPI_API_KEY}
+      - VAPI_PROJECT_ID=${VAPI_PROJECT_ID}
+    volumes:
+      - .:/app
+    depends_on: []
+
+  streamlit:
+    build: .
+    command: /bin/bash -c "streamlit run dashboard.py --server.port 8501 --server.headless true"
+    ports:
+      - "8501:8501"
+    environment:
+      - PLATFORM_WEB_URL=${PLATFORM_WEB_URL:-http://localhost:8080}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+    volumes:
+      - .:/app
+    depends_on:
+      - api
+
+  # Optional Postgres service - uncomment to use Postgres in docker-compose
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bizstack
+      POSTGRES_PASSWORD: bizstack
+      POSTGRES_DB: bizstack
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db_data:
+
+# Notes:
+# - This compose file mounts the repository into /app in each container for rapid dev.
+# - For production, replace volume mounts with built images and supply secrets via your host/CI.

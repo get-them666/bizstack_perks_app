@@ -61,7 +61,15 @@
         const SUPABASE_URL = "https://supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1tcWpocnJvbGVrcXJmYnlrb2dnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA5NzYyMTMsImV4cCI6MjA1NjU1MjIxM30.7jJm7qYxVqVz8R_Z6f-O9vFzWlQxO6G1mZ8W4z2v3bY";
         
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabaseClient = null;
+        try {
+            if (window.supabase && typeof window.supabase.createClient === 'function') {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            }
+        } catch (err) {
+            console.warn('Supabase init error:', err);
+            supabaseClient = null;
+        }
 
         async function handleSubmit(e) {
             e.preventDefault();
@@ -76,17 +84,34 @@
                 additional_notes: document.getElementById('notes').value
             };
 
-            const { error } = await supabase.from('client_intake').insert([payload]);
+            let error = null;
+            if (supabaseClient) {
+                try {
+                    const res = await supabaseClient.from('client_intake').insert([payload]);
+                    error = res.error;
+                } catch (err) {
+                    console.warn('Supabase insert threw:', err);
+                    error = { message: String(err) };
+                }
+            } else {
+                error = { message: 'Supabase client unavailable' };
+            }
 
-            if (error) {
+            if (error && !error.message.includes('Supabase client unavailable')) {
                 statusText.innerText = '▲ STATUS: DATABASE ERROR CONNECTION';
                 statusText.style.color = '#e05353';
-                alert('Database Error: ' + error.message);
-            } else {
-                statusText.innerText = '● STATUS: CONSULT MATRIX LIVE // RECORD PERMANENT';
-                statusText.style.color = '#27ae60';
-                alert('Your portfolio optimization request has been safely logged in the database.');
-                document.getElementById('intake-form').reset();
+                alert('Database Error: ' + (error.message || JSON.stringify(error)));
+            } else if (!error || (error && error.message.includes('Supabase client unavailable'))) {
+                // If supabase wasn't available, continue to fallback logic below (no early return)
+                if (!supabaseClient) {
+                    // fall through to fallback endpoints
+                } else {
+                    statusText.innerText = '● STATUS: CONSULT MATRIX LIVE // RECORD PERMANENT';
+                    statusText.style.color = '#27ae60';
+                    alert('Your portfolio optimization request has been safely logged in the database.');
+                    document.getElementById('intake-form').reset();
+                    return;
+                }
             }
         }
     </script>
@@ -113,7 +138,7 @@
     const payload = { company: companyName, footprint: footprint, constraints: constraints };
 
     // Try the relative API first, then fall back to a local host proxy if that fails
-    const endpoints = ['/api/consult', 'http://127.0.0.1:8080/api/consult'];
+    const endpoints = ['http://127.0.0.1:8080/api/consult', '/api/consult'];
 
     for (const endpoint of endpoints) {
       try {

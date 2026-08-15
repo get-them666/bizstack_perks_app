@@ -12,4 +12,3 @@ python-dotenv>=1.0.0
 plaid-python==24.0.0
 gunicorn==22.0.0
 twilio==9.3.0
-Pillow>=10.4.0

@@ -7,36 +7,43 @@ ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "change-me")
 
 st.set_page_config(page_title="BIZSTACK // UNDERWRITING & MONETIZATION CONTROL", layout="wide")
 
-# Expanded navigation tabs
-tab = st.sidebar.selectbox("View", ["Fintech Leads Dashboard", "Hotel Management", "Admin Console"])
+# Navigation Sidebar
+tab = st.sidebar.selectbox("View", ["Fintech Leads Dashboard", "Hotel Management"])
 
 if tab == "Fintech Leads Dashboard":
     st.title("🛰️ BIZSTACK FINTECH UNDERWRITING PANEL")
     st.write("Real-time incoming commercial loan leads, underwriting metric flows, and asset valuation vectors.")
     
-    # Render lead monitoring panel openly on landing page
-    token_input = st.sidebar.text_input("Enter Admin Token for Protected Ingestions", type="password", value=ADMIN_TOKEN)
+    # Inline verification box that registers instantly upon pressing Enter
+    st.sidebar.markdown("---")
+    token_input = st.sidebar.text_input("Admin Verification Token (Press Enter)", type="password", value="")
     
-    st.subheader("📊 Active Lead Telemetry Pipelines")
-    try:
-        r = requests.get(f"{PLATFORM_WEB_URL}/admin/leads", headers={"x-admin-token": token_input})
-        if r.status_code == 200:
-            leads = r.json()
-            st.success(f"Successfully tracking {len(leads)} active business applications!")
-            
-            # Create interactive table view metrics
-            for lead in leads[:200]:
-                with st.container():
-                    col1, col2, col3, col4 = st.columns([1, 3, 2, 2])
-                    col1.metric("ID", lead.get('id'))
-                    col2.write(f"**Business Name:** {lead.get('business_name')}")
-                    col3.metric("Annual Revenue", f"${lead.get('annual_revenue'):,}" if isinstance(lead.get('annual_revenue'), (int, float)) else f"${lead.get('annual_revenue')}")
-                    col4.metric("Risk Score", lead.get('score'), delta="Sellable" if lead.get('sellable') else "Flagged", delta_color="normal" if lead.get('sellable') else "inverse")
-                    st.markdown("---")
-        else:
-            st.info("API server is active. Enter your valid configuration token in the sidebar panel to pipe live lead data streams.")
-    except Exception as e:
-        st.error(f"Failed to communicate with active server network: {e}")
+    if token_input == "":
+        st.info("🔒 Access Protected. Please input your validation token into the sidebar panel to unlock live streaming fintech telemetry.")
+    elif token_input != ADMIN_TOKEN:
+        st.error("❌ Invalid Token. Please enter the correct admin validation credentials.")
+    else:
+        st.sidebar.success("🔓 Authenticated Successfully")
+        st.subheader("📊 Active Lead Telemetry Pipelines")
+        try:
+            r = requests.get(f"{PLATFORM_WEB_URL}/admin/leads", headers={"x-admin-token": token_input})
+            if r.status_code == 200:
+                leads = r.json()
+                st.success(f"Successfully tracking {len(leads)} active business applications!")
+                
+                # Render interactive metrics table panel
+                for lead in leads[:200]:
+                    with st.container():
+                        col1, col2, col3, col4 = st.columns([1, 3, 2, 2])
+                        col1.metric("Lead ID", lead.get('id'))
+                        col2.markdown(f"### {lead.get('business_name')}")
+                        col3.metric("Annual Revenue", f"${lead.get('annual_revenue'):,}" if isinstance(lead.get('annual_revenue'), (int, float)) else f"${lead.get('annual_revenue')}")
+                        col4.metric("Underwriting Risk", lead.get('score'), delta="Sellable Asset" if lead.get('sellable') else "Flagged/High Risk", delta_color="normal" if lead.get('sellable') else "inverse")
+                        st.markdown("---")
+            else:
+                st.error(f"Backend Server error: {r.status_code}. Unable to extract database tables.")
+        except Exception as e:
+            st.error(f"Failed to communicate with active server network: {e}")
 
 elif tab == "Hotel Management":
     st.title("🏨 HOTEL DISTRIBUTION MANAGEMENT MATRIX")
@@ -67,38 +74,3 @@ elif tab == "Hotel Management":
                             st.markdown("---")
         except Exception as e:
             st.error(f"Failed to communicate with active server network: {e}")
-
-elif tab == "Admin Console":
-    st.title("🔑 Admin Action Console")
-    token_input = st.text_input("Admin token Verification", type="password")
-    if token_input != ADMIN_TOKEN:
-        st.warning("Enter the correct admin token to access administrative submission features.")
-    else:
-        st.success("Admin identity verified.")
-        
-        st.subheader("Create New Corporate Deal Asset")
-        with st.form(key='create_deal'):
-            brand = st.text_input('Brand')
-            hotel_name = st.text_input('Hotel name')
-            city = st.text_input('City')
-            monetized_url = st.text_input('Monetized URL')
-            submit = st.form_submit_button('Create')
-            if submit:
-                payload = {"brand": brand, "hotel_name": hotel_name, "city": city, "monetized_url": monetized_url}
-                try:
-                    r = requests.post(f"{PLATFORM_WEB_URL}/api/deals/", json=payload)
-                    if r.status_code == 200:
-                        st.success('Deal created successfully.')
-                    else:
-                        st.error(f'Failed to create deal: {r.text}')
-                except Exception as e:
-                    st.error(f'Error pushing asset matrix: {e}')
-                    
-        st.markdown('---')
-        st.subheader('Export SaaS Underwriting Leads (CSV)')
-        if st.button('Generate CSV Datagram'):
-            try:
-                export_url = f"{PLATFORM_WEB_URL}/admin/export/leads/csv"
-                st.markdown(f"[📥 Download Compiled CSV Dataset]({export_url})")
-            except Exception as e:
-                st.error(f'Error preparing export: {e}')

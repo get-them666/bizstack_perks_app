@@ -1,14 +1,29 @@
 import os
 from fastapi import FastAPI, Header, HTTPException, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 
 app = FastAPI(title="BizStack Perks Platform API")
+
+# Temporary in-memory lookup map to redirect affiliate links
+DEALS_DATABASE = {
+    "D001": "https://marriott.com",
+    "D002": "https://hilton.com"
+}
 
 @app.get("/")
 async def health_check():
     return {"status": "healthy", "engine": "BizStack Perks Platform"}
 
-# 1. FIXED FINTECH LEADS ROUTE (Resolves Underwriting Panel 404)
+# FIX THE REDIRECT ROUTE (Resolves affiliate link 404s)
+@app.get("/r/{link_id}")
+async def redirect_to_deal(link_id: str):
+    target_url = DEALS_DATABASE.get(link_id)
+    if not target_url:
+        # If specific ID isn't found, fallback to your main site home page
+        return RedirectResponse(url="http://localhost:8501")
+    return RedirectResponse(url=target_url)
+
+# FINTECH LEADS ROUTE
 @app.get("/admin/leads")
 async def get_admin_leads(x_admin_token: str = Header(None)):
     if x_admin_token != "change-me":
@@ -21,7 +36,7 @@ async def get_admin_leads(x_admin_token: str = Header(None)):
     ]
     return mock_leads
 
-# 2. FIXED HOTEL DEALS ROUTE (Resolves Hotel Management 404)
+# HOTEL DEALS ROUTE
 @app.get("/api/deals")
 async def get_deals(city: str = Query("MIA")):
     city_upper = city.upper()

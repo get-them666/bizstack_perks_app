@@ -7,7 +7,7 @@ ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "change-me")
 
 st.set_page_config(page_title="BIZSTACK PERKS // SYSTEM MONETIZATION PLATFORM", layout="wide")
 
-# Navigation Sidebar Selector
+# Modernized multi-page tab layout selectors
 tab = st.sidebar.selectbox("Navigation Core", [
     "01 / STRATEGIC CAPITAL INTAKE", 
     "02 / CORPORATE YIELD ADVISING", 
@@ -47,40 +47,14 @@ elif tab == "02 / CORPORATE YIELD ADVISING":
     
     st.info("🔒 Premium Modules Gated. Access requires a valid premium license pass.")
     
-    # RENDER TACTILE CTA FOR STRIPE PORTAL
-    st.markdown("""
-        <style>
-        .stripe-btn-container {
-            display: inline-block;
-            width: 100%;
-            margin-top: 15px;
-        }
-        .stripe-btn {
-            background-color: #635BFF;
-            color: white !important;
-            padding: 14px 28px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none !important;
-            border-radius: 6px;
-            display: block;
-            border: none;
-            transition: background-color 0.2s;
-        }
-        .stripe-btn:hover {
-            background-color: #0A2540;
-        }
-        </style>
-    """, unsafe_allowed_html=True)
-    
-    if st.button("EXECUTE SESSION PIPELINE"):
+    if st.button("EXECUTE PROPOSAL SESSION PIPELINE →"):
         try:
             r = requests.post(f"{PLATFORM_WEB_URL}/api/v1/checkout/premium")
             if r.status_code == 200:
                 checkout_link = r.json().get("checkout_url")
-                st.markdown(f'<div class="stripe-btn-container"><a href="{checkout_link}" target="_blank" class="stripe-btn">💳 OPEN SECURE STRIPE CHECKOUT TERMINAL →</a></div>', unsafe_allowed_html=True)
-                st.caption("A premium billing tunnel has been constructed. Click the massive purple asset button above to complete your transaction.")
+                # Native, prominent, unbreakable full-width Stripe check-out pass button
+                st.link_button("💳 OPEN SECURE STRIPE CHECKOUT TERMINAL", checkout_link, use_container_width=True, type="primary")
+                st.caption("A billing tunnel has been constructed. Click the prominent colored button above to complete your transaction.")
             else:
                 st.error("Failed to generate a custom checkout engine session.")
         except Exception as e:
@@ -90,27 +64,6 @@ elif tab == "Hotel Distribution Matrix":
     st.title("🏨 HOTEL DISTRIBUTION MANAGEMENT MATRIX")
     st.write("Extract live tracking assets matching targeted Marriott and Hilton corporate properties.")
     
-    # INJECT CUSTOM HIGHLIGHT BUTTON ACTIONS FOR HOTEL AFFILIATE CLICKS
-    st.markdown("""
-        <style>
-        .booking-btn {
-            background-color: #FF4B4B;
-            color: white !important;
-            padding: 10px 20px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none !important;
-            border-radius: 4px;
-            display: block;
-            margin-top: 10px;
-            box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
-        }
-        .booking-btn:hover {
-            background-color: #1E1E1E;
-        }
-        </style>
-    """, unsafe_allowed_html=True)
-
     city_target = st.text_input("ENTER REGIONAL AIRPORT IATA CODE (e.g. NYC, LAX, MIA):", value="MIA").upper()
     if st.button("HARVEST LIVE DEALS"):
         try:
@@ -125,9 +78,9 @@ elif tab == "Hotel Distribution Matrix":
                             st.subheader(f"🏨 [{deal.get('brand').upper()}] {deal.get('hotel_name')}")
                             st.write(f"Tracking regional point: **{deal.get('city')}**")
                         with col2:
-                            # Render large red visual block layout buttons instead of raw trailing strings
+                            # Native, unbreakable layout button matching your primary red panel design theme
                             redirect_path = f"{PLATFORM_WEB_URL}/r/{deal.get('id')}"
-                            st.markdown(f'<a href="{redirect_path}" target="_blank" class="booking-btn">🔗 SECURE BOOKING LINK</a>', unsafe_allowed_html=True)
+                            st.link_button("🔗 SECURE BOOKING LINK", redirect_path, use_container_width=True)
                         st.markdown("---")
             else:
                 st.error("Backend returned an error code.")

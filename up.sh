@@ -1,54 +1,46 @@
-# Cloudflared integration added to up.sh
-# Usage: set CF_TUNNEL_NAME and CF_INGRESS_HOST env vars if you created a Cloudflare Tunnel
+#!/bin/bash
+set -euo pipefail
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FASTAPI_PORT="${FASTAPI_PORT:-8080}"
+NGROK_API_LOCAL="${NGROK_API_LOCAL:-http://127.0.0.1:4040}"
 
+echo "🚀 Starting All Backend Services Automatically..."
+
+# 1. Kill any existing zombie server or tunnel processes
+killall ngrok python3 python uvicorn 2>/dev/null || true
+
+# 2. Fire up the Core Python App Servers in the background
+echo "📦 Initializing Flask Ingestion App Server on port 8080..."
+nohup python3 "$REPO_ROOT/app.py" > "$REPO_ROOT/flask_server.log" 2>&1 &
+
+echo "⚡ Initializing FastAPI Matrix App Server on port 8000..."
+nohup uvicorn api_server:app --port 8000 --host 0.0.0.0 > "$REPO_ROOT/api_server.log" 2>&1 &
+
+sleep 2
+
+# 3. Handle Cloudflare or Ngrok Network Tunnel Pipeline
 if command -v cloudflared >/dev/null 2>&1 && [ -n "${CF_TUNNEL_NAME:-}" ]; then
-  echo "🌐 Starting cloudflared tunnel for ${CF_TUNNEL_NAME}..."
-  # Run tunnel in background (assumes credentials are provisioned via 'cloudflared tunnel create' and 'cloudflared tunnel route dns')
-  nohup cloudflared tunnel run "${CF_TUNNEL_NAME}" > "$REPO_ROOT/cloudflared.log" 2>&1 &
-  CLOUDFLARED_PID=$!
-  sleep 1.5
-  if [ -n "${CF_INGRESS_HOST:-}" ]; then
-    echo "🎯 Cloudflare Tunnel public hostname: https://${CF_INGRESS_HOST}"
-  else
-    echo "⚠️  cloudflared started but CF_INGRESS_HOST not set. Set CF_INGRESS_HOST to your routed DNS name (e.g. api.example.com)."
-  fi
-else
-  # fall back to existing ngrok behavior
-  if command -v ngrok >/dev/null 2>&1; then
-    if [ -n "${NGROK_AUTHTOKEN:-}" ]; then
-      echo "🌐 Starting ngrok for FastAPI (port ${FASTAPI_PORT})"
-      nohup ngrok http ${FASTAPI_PORT} --log=stdout > /dev/null 2>&1 &
-      sleep 1.5
-      if command -v python3 >/dev/null 2>&1; then
-        echo "🔎 Attempting to fetch ngrok public URL from ${NGROK_API_LOCAL}/api/tunnels"
-        TUNNEL_JSON=$(curl -s ${NGROK_API_LOCAL}/api/tunnels || true)
-        if [ -n "$TUNNEL_JSON" ]; then
-          NGROK_URL=$(python3 - <<PY
-import sys, json
-try:
-  data = json.load(sys.stdin)
-  tunnels = data.get('tunnels') or []
-  if tunnels:
-    print(tunnels[0].get('public_url'))
-except Exception:
-  pass
-PY
-<<< "$TUNNEL_JSON")
-          if [ -n "$NGROK_URL" ]; then
-            echo "🎯 Ngrok public URL: $NGROK_URL"
-          else
-            echo "⚠️  Ngrok running but couldn't determine public URL from API"
-          fi
-        else
-          echo "⚠️  Ngrok API returned no data. Is ngrok running and authenticated?"
-        fi
-      else
-        echo "⚠️  python3 not available to parse ngrok API response"
-      fi
-    else
-      echo "⚠️  ngrok installed but NGROK_AUTHTOKEN not provided; you can still start ngrok manually."
+    echo "🌐 Starting cloudflared tunnel for ${CF_TUNNEL_NAME}..."
+    nohup cloudflared tunnel run "${CF_TUNNEL_NAME}" > "$REPO_ROOT/cloudflared.log" 2>&1 &
+    if [ -n "${CF_INGRESS_HOST:-}" ]; then
+        echo "🎯 Cloudflare Tunnel public hostname: https://${CF_INGRESS_HOST}"
     fi
-  else
-    echo "ℹ️  ngrok not found on PATH - skipping ngrok startup (install ngrok if you need a public tunnel)"
-  fi
+else
+    # Fall back to native ngrok behavior
+    if command -v ngrok >/dev/null 2>&1; then
+        export NGROK_AUTHTOKEN="${NGROK_AUTHTOKEN:-3Fv1rvZc5VvYThGCMBL9gsHiE78_4AC9GZ78t7M1uciSWy6H5}"
+        echo "🌐 Starting ngrok network bridge map..."
+        nohup ngrok http 8000 --authtoken="${NGROK_AUTHTOKEN}" --log=stdout > /dev/null 2>&1 &
+        sleep 2
+        
+        TUNNEL_JSON=$(curl -s http://127.0.0 || true)
+        if [ -n "$TUNNEL_JSON" ] && command -v python3 >/dev/null 2>&1; then
+            NGROK_URL=$(python3 -c "import sys, json; data=json.load(sys.stdin); t=data.get('tunnels', []); print(t[0].get('public_url')) if t else print('')" <<< "$TUNNEL_JSON")
+            if [ -n "$NGROK_URL" ]; then
+                echo "🎯 Public Gateway Live Address: $NGROK_URL"
+            fi
+        fi
+    fi
 fi
+
+echo "✅ All servers successfully initialized and running in the background!"

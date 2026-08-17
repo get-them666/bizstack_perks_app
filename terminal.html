@@ -40,9 +40,9 @@
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const SUPABASE_URL = "https://supabase.co";
-            const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1tcWpocnJvbGVrcXJmYnlrb2dnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA5NzYyMTMsImV4cCI6MjA1NjU1MjIxM30.7jJm7qYxVqVz8R_Z6f-O9vFzWlQxO6G1mZ8W4z2v3bY";
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const SUPABASE_URL = "https://mmqjhrrolekqrfbykogg.supabase.co";
+            const SUPABASE_ANON_KEY = "sb_publishable_Umym1W8tv5XemwK5PmelQA_m5BiXuRi";
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_Key
             const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('file-input');
             const fileList = document.getElementById('file-list');
@@ -87,5 +87,18 @@
             });
         });
     </script>
+<script>
+(function(){
+  document.addEventListener('click', function(e){
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    if (a.target === '_blank') return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('javascript:') || href.startsWith('#')) return;
+    const start = location.href;
+    setTimeout(() => { if (location.href === start) { try { location.href = href; } catch(e){} } }, 50);
+  });
+})();
+</script>
 </body>
 </html>

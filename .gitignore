@@ -1,38 +1,5 @@
-# ====================================================================
-# BIZSTACK PERKS APP - ARCHITECTURAL PRODUCTION SECURITY FILTER
-# ====================================================================
-
-# 🔑 Critical Infrastructure Credentials & Tokens
 .env
-.env.*
-!.env.example
-launcher.sh
-setup.sh
-
-# 🗄️ Relational Database Engines & Local States
 *.db
-*.db.bak
-*.sqlite
-*.sqlite3
-*.csv
-*.xlsx
 *.log
-
-# 🐍 Python Runtime & Dependency Wheels
-venv/
-.venv/
-ENV/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.pytest_cache/
-
-# 🍏 macOS System Display Leaks (Finder Metadata)
 .DS_Store
-.AppleDouble
-.LSOverride
-Icon?
-._*
-.Spotlight-V100
-.Trashes
+~/clean_vault
